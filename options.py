@@ -1,6 +1,6 @@
 import sys
 from colors import Colors
-from security import PasswordManager, BasePasswordManager
+from security import PasswordManager
 
 
 class Options:
@@ -83,11 +83,11 @@ class Options:
         This method continuously prompt the user to enter current password to perform the selected
         action for 3. If you enter wrong password for 3rd time program will terminate
         """
-        bpm = BasePasswordManager()
+        pm = PasswordManager()
         pwd = input(f'{cls.__username.title()} Enter your current password to perform the action: ')
         chances = 0
         while True:
-            if bpm.is_correct(pwd):
+            if pm.is_correct(pwd):
                 return True
             else:
                 if chances > 2:
@@ -102,12 +102,11 @@ class Options:
         """ This method prompt the user to select correct options through command line """
 
         pm = PasswordManager()
-        bpm = BasePasswordManager()
 
         if not cls.__username:
             cls.__ask_username()
 
-        if not bpm.get_password():
+        if not pm.get_password():
             print(f'{Colors.WARNING}You have not set password for you account{Colors.END}')
             cls.__ask_password()
 
@@ -118,10 +117,10 @@ class Options:
         while True:
             selection = cls.__show_options()
             if selection == 1 and cls.check_password():
-                print(f'{Colors.CYAN}{bpm.get_all_passwords()}{Colors.END}')
+                print(f'{Colors.CYAN}{pm.get_all_passwords()}{Colors.END}')
                 continue
             elif selection == 2 and cls.check_password():
-                print(f'{Colors.CYAN}Your current password: {bpm.get_password()}{Colors.END}')
+                print(f'{Colors.CYAN}Your current password: {pm.get_password()}{Colors.END}')
                 continue
             elif selection == 3 and cls.check_password():
                 cls.__ask_password()

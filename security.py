@@ -15,6 +15,7 @@ class BasePasswordManager:
         return self.old_passwords and password == self.old_passwords[-1] or False
 
     def get_all_passwords(self) -> list:
+        """ This method returns the all password of the user as a list """
         return self.old_passwords
 
 
@@ -52,16 +53,22 @@ class PasswordManager(BasePasswordManager):
         This method returns the security level of the current password.
         It can also check and return the security level of a new password passed as a string.
         Security levels:
-            -   level -1 - If user do not have any passwords set
-            -   level 0 - Password consists of alphabets or numbers only.
-            -   level 1 - Alphanumeric passwords.
-            -   level 2 - Alphanumeric passwords with special characters.
+            -   -1 will be returned if user do not have any passwords set
+            -   0 will be returned of password consists of alphabets or numbers only.
+            -   1 will be returned if password is alphanumeric.
+            -   2 will be returned if password is alphanumeric passwords along with special characters.
         """
         pwd = password and password or self.old_passwords and self.old_passwords[-1] or False
-        print('-------------- ', pwd, ' ----------------')
+
         if not pwd:
             return -1
-        elif any(re.compile('[!@#$%^&*()+?_=,<>/-]+').findall(pwd)):
+        elif (any(re.compile('[a-zA-Z]+[0-9]+[!@#$%^&*()+?_=,<>/-]+').findall(pwd))
+              or any(re.compile('[a-zA-Z]+[!@#$%^&*()+?_=,<>/-]+[0-9]+').findall(pwd))
+              or any(re.compile('[0-9]+[a-zA-Z]+[!@#$%^&*()+?_=,<>/-]+').findall(pwd))
+              or any(re.compile('[0-9]+[!@#$%^&*()+?_=,<>/-]+[a-zA-Z]+').findall(pwd))
+              or any(re.compile('[!@#$%^&*()+?_=,<>/-]+[a-zA-Z]+[0-9]+').findall(pwd))
+              or any(re.compile('[!@#$%^&*()+?_=,<>/-]+[0-9]+[a-zA-Z]+').findall(pwd))
+        ):
             return 2
         elif any(re.compile('[a-zA-Z]+[0-9]+').findall(pwd)) or any(re.compile('[0-9]+[a-zA-Z]+').findall(pwd)):
             return 1
