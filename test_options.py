@@ -14,7 +14,8 @@ class TestOptions(TestCase):
         del self.pw
 
     def test_check_password(self):
-        # first test
+        # Given
         self.pw.old_passwords.append('password')
 
+        # Then
         self.assertTrue(self.ops.check_password())
