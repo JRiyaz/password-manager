@@ -55,9 +55,10 @@ class TestPasswordManager(TestCase):
 
         # second test, with alphanumeric and special characters
         # given
-        self.pw.old_passwords = ['password@123']
+        password_123 = 'password@123'
+        self.pw.old_passwords = [password_123]
         # then
-        self.assertEqual(self.pw.set_password('password@123'), 2)
+        self.assertEqual(self.pw.set_password('%s' % password_123), 2)
 
         # third test, with only numeric characters which is less secured than old password
         self.assertEqual(self.pw.set_password('123456'), 1)

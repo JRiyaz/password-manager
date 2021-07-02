@@ -15,7 +15,6 @@ class Options:
         """ This method prompt the user to enter username through command line """
         print(f"{Colors.CYAN}Please register here{Colors.END}")
         Options.__username = input("Please enter username: ")
-        return
 
     @staticmethod
     def __ask_password() -> None:
@@ -23,18 +22,15 @@ class Options:
         pm = PasswordManager()
         secure = False
         while True:
-            msg = secure and 'Enter new strong password' or 'Enter your new password'
+            msg = secure is True and 'Enter new strong password' or 'Enter your new password'
             password = input(f"{msg}: ")
             set_password = pm.set_password(password)
             if set_password == -1:
                 print(f'{Colors.WARNING}Password must contain at-lease 6 characters{Colors.END}')
-                continue
             elif set_password == 1:
                 print(f'{Colors.WARNING}New password must be secured than your old password{Colors.END}')
-                continue
             elif set_password == 2:
                 print(f'{Colors.WARNING}Password already exists, it cannot be set.{Colors.END}')
-                continue
             else:
                 message = Options.__welcome and 'Your password is set' or 'Password has changed'
                 print(f'{Colors.GREEN}{message}{Colors.END}')
@@ -95,7 +91,6 @@ class Options:
                 print(f'{Colors.WARNING}You have entered wrong password{Colors.END}')
                 pwd = input(f'{Colors.FAIL}You have {3 - chances} attempts left. Please try again: {Colors.END}')
                 chances += 1
-                continue
 
     @classmethod
     def main_menu(cls) -> None:
@@ -118,17 +113,13 @@ class Options:
             selection = cls.__show_options()
             if selection == 1 and cls.check_password():
                 print(f'{Colors.CYAN}{pm.get_all_passwords()}{Colors.END}')
-                continue
             elif selection == 2 and cls.check_password():
                 print(f'{Colors.CYAN}Your current password: {pm.get_password()}{Colors.END}')
-                continue
             elif selection == 3 and cls.check_password():
                 cls.__ask_password()
-                continue
             elif selection == 4 and cls.check_password():
                 level = pm.get_level()
                 strength = level == 0 and 'WEAK' or level == 1 and 'STRONG' or 'VERY STRONG'
                 print(f'{Colors.CYAN}Your password is: {strength}{Colors.END}')
-                continue
             elif selection == 5:
                 sys.exit('\nYou are logged out')

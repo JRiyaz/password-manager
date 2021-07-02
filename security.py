@@ -58,7 +58,7 @@ class PasswordManager(BasePasswordManager):
             -   1 will be returned if password is alphanumeric.
             -   2 will be returned if password is alphanumeric passwords along with special characters.
         """
-        pwd = password and password or self.old_passwords and self.old_passwords[-1] or False
+        pwd = password is not None and password or self.old_passwords and self.old_passwords[-1] or False
 
         if not pwd:
             return -1
